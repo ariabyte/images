@@ -1,0 +1,24 @@
+{
+  "name": "media.proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariabyte/images.git"
+  },
+  "author": "Marco <me@marco.win>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ariabyte/images/issues"
+  },
+  "homepage": "https://github.com/ariabyte/images#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "express": "^4.17.1",
+    "sharp": "^0.28.1"
+  }
+}
