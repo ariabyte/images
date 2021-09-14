@@ -37,7 +37,7 @@ server.listen(process.env.PORT || 8500, () => {
         if (err) throw err;
 
         for (const file of files) {
-            fs.unlink(path.join(directory, file), err => {
+            fs.unlink(path.join("./images", file), err => {
                 if (err) throw err;
             });
         }
