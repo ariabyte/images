@@ -9,10 +9,7 @@ function getExtension(filename) {
     return (i < 0) ? '' : filename.substr(i + 1);
 }
 
-module.exports = async function resize (url, width, height, res) {
-    let rnd = Math.random();
-    let format = getExtension(response.request.path) || "png";
-    let image = filename || "./images/" + rnd + "e." + format;
+module.exports = async function resize(url, width, height, res, image) {
 
     try {
         if (cache.get(url + width + height + format)) {
@@ -21,6 +18,9 @@ module.exports = async function resize (url, width, height, res) {
         }
 
         let response = await axios.get(url, { responseType: "arraybuffer" });
+        let format = getExtension(response.request.path) || "png";
+        let rnd = Math.random();
+        let image = image || "./images/" + rnd + "e." + format;
         let buffer = Buffer.from(response.data);
 
         let transform = sharp(buffer);
@@ -41,6 +41,6 @@ module.exports = async function resize (url, width, height, res) {
             resize("https://usercontent.caards.me/pxl.png", format, width, height, res, image);
         });
     } catch {
-        resize("https://usercontent.caards.me/pxl.png", format, width, height, res, image);
+        resize("https://usercontent.caards.me/pxl.png", width, height, res, image);
     }
 }
