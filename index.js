@@ -1,5 +1,6 @@
 const express = require("express");
 const resize = require("./resize");
+const fs = require("fs");
 
 const server = express();
 
@@ -30,6 +31,16 @@ server.get('/', (req, res) => {
 
 server.listen(process.env.PORT || 8500, () => {
     console.log('Server started!');
+
+    fs.readdir("./images", (err, files) => {
+        if (err) throw err;
+
+        for (const file of files) {
+            fs.unlink(path.join(directory, file), err => {
+                if (err) throw err;
+            });
+        }
+    });
 });
 
 process.on('uncaughtException', (error) => {

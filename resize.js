@@ -9,13 +9,20 @@ function getExtension(filename) {
     return (i < 0) ? '' : filename.substr(i + 1);
 }
 
-module.exports = async (url, width, height, res) => {
+module.exports = async function resize (url, width, height, res) {
     try {
+        if (cache.get(url + width + height + format)) {
+            const readStream = fs.createReadStream(cache.get(url + width + height + format));
+            return readStream.pipe(res);
+        }
+
         let response = await axios.get(url, { responseType: "arraybuffer" });
         let buffer = Buffer.from(response.data);
 
         let format = getExtension(response.request.path) || "png";
 
+        let rnd = Math.random();
+        let image = filename || "./images/" + rnd + "e." + format;
         let transform = sharp(buffer);
 
         if (format) transform = transform.toFormat(format);
@@ -28,7 +35,12 @@ module.exports = async (url, width, height, res) => {
         res.set('Cache-control', 'public, max-age=280800');
         
         res.send(data);
+
+        cache.set(url + width + height + format, image)
+        transform.toFile(image).catch((err) => {
+            resize("https://usercontent.caards.me/pxl.png", format, width, height, res, image);
+        });
     } catch {
-        res.redirect("https://usercontent.caards.me/pxl.png");
+        resize("https://usercontent.caards.me/pxl.png", format, width, height, res, image);
     }
 }
