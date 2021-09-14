@@ -1,6 +1,7 @@
 const express = require("express");
 const resize = require("./resize");
 const fs = require("fs");
+const path = require('path');
 
 const server = express();
 

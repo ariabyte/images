@@ -10,6 +10,10 @@ function getExtension(filename) {
 }
 
 module.exports = async function resize (url, width, height, res) {
+    let rnd = Math.random();
+    let format = getExtension(response.request.path) || "png";
+    let image = filename || "./images/" + rnd + "e." + format;
+
     try {
         if (cache.get(url + width + height + format)) {
             const readStream = fs.createReadStream(cache.get(url + width + height + format));
@@ -19,10 +23,6 @@ module.exports = async function resize (url, width, height, res) {
         let response = await axios.get(url, { responseType: "arraybuffer" });
         let buffer = Buffer.from(response.data);
 
-        let format = getExtension(response.request.path) || "png";
-
-        let rnd = Math.random();
-        let image = filename || "./images/" + rnd + "e." + format;
         let transform = sharp(buffer);
 
         if (format) transform = transform.toFormat(format);
