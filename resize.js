@@ -21,7 +21,7 @@ module.exports = async function resize(url, width, height, res) {
         let format = getExtension(response.request.path) || "png";
 
         let rnd = Math.random();
-        let image = image || "./images/" + rnd + "e." + format;
+        let image = "./images/" + rnd + "e." + format;
 
         let buffer = Buffer.from(response.data);
 
@@ -40,9 +40,10 @@ module.exports = async function resize(url, width, height, res) {
 
         cache.set(url + width + height + format, image)
         transform.toFile(image).catch((err) => {
-            resize("https://usercontent.caards.me/pxl.png", format, width, height, res, image);
+            resize("https://usercontent.caards.me/pxl.png", format, width, height, res);
         });
-    } catch {
+    } catch (err) {
+        console.log(err)
         resize("https://usercontent.caards.me/pxl.png", width, height, res);
     }
 }
